@@ -1,0 +1,206 @@
+import 'package:flutter/material.dart';
+import 'package:shopconnect/models/category.dart';
+import 'package:shopconnect/models/item.dart';
+import 'package:shopconnect/models/shop.dart';
+
+const availableCategories = [
+  Category(
+    id: 'c1',
+    title: 'Grocery',
+    icon: Icons.shopping_cart,
+    color: Colors.green,
+  ),
+  Category(
+    id: 'c2',
+    title: 'Fruits & Vegetables',
+    icon: Icons.local_grocery_store,
+    color: Colors.lightGreen,
+  ),
+  Category(
+    id: 'c3',
+    title: 'Clothing',
+    icon: Icons.checkroom,
+    color: Colors.purpleAccent,
+  ),
+  Category(
+    id: 'c4',
+    title: 'Electronics',
+    icon: Icons.devices,
+    color: Colors.blueAccent,
+  ),
+  Category(
+    id: 'c5',
+    title: 'Books',
+    icon: Icons.menu_book,
+    color: Colors.orangeAccent,
+  ),
+  Category(
+    id: 'c6',
+    title: 'Bakery',
+    icon: Icons.cake,
+    color: Colors.pinkAccent,
+  ),
+  Category(
+    id: 'c7',
+    title: 'Pharmacy',
+    icon: Icons.local_hospital,
+    color: Colors.redAccent,
+  ),
+  Category(id: 'c8', title: 'Hardware', icon: Icons.build, color: Colors.teal),
+];
+
+final List<Shop> dummyShops = [
+  Shop(
+    id: 's1',
+    name: 'FreshMart Grocery',
+    isPremium: true,
+    categoryType: 'Grocery',
+    rating: 4.7,
+    distance: 1.2,
+  ),
+  Shop(
+    id: 's2',
+    name: 'MediCare Pharmacy',
+    isPremium: false,
+    categoryType: 'Pharmacy',
+    rating: 4.3,
+    distance: 2.0,
+  ),
+  Shop(
+    id: 's3',
+    name: 'Hardware Hub',
+    isPremium: true,
+    categoryType: 'Hardware',
+    rating: 4.6,
+    distance: 1.8,
+  ),
+  Shop(
+    id: 's4',
+    name: 'Green Basket Veggies',
+    isPremium: false,
+    categoryType: 'Fruits & Vegetables',
+    rating: 4.5,
+    distance: 1.0,
+  ),
+  Shop(
+    id: 's5',
+    name: 'BookNest Store',
+    isPremium: true,
+    categoryType: 'Books',
+    rating: 4.8,
+    distance: 2.3,
+  ),
+  Shop(
+    id: 's6',
+    name: 'SweetBite Bakery',
+    isPremium: false,
+    categoryType: 'Bakery',
+    rating: 4.2,
+    distance: 0.9,
+  ),
+  Shop(
+    id: 's7',
+    name: 'Trendy Threads',
+    isPremium: true,
+    categoryType: 'Clothing',
+    rating: 4.9,
+    distance: 1.5,
+  ),
+  Shop(
+    id: 's8',
+    name: 'TechWorld Electronics',
+    isPremium: true,
+    categoryType: 'Electronics',
+    rating: 4.6,
+    distance: 2.1,
+  ),
+  Shop(
+    id: 's9',
+    name: 'QuickStop Grocery',
+    isPremium: false,
+    categoryType: 'Grocery',
+    rating: 4.1,
+    distance: 1.7,
+  ),
+  Shop(
+    id: 's10',
+    name: 'BakeHouse Café',
+    isPremium: true,
+    categoryType: 'Bakery',
+    rating: 4.8,
+    distance: 0.8,
+  ),
+];
+
+final List<Item> dummyItems = [
+  Item(
+    id: 'i1',
+    categoryType: 'Grocery',
+    shopName: 'FreshMart Grocery',
+    availableStock: 50,
+    price: 20.0,
+  ),
+  Item(
+    id: 'i2',
+    categoryType: 'Grocery',
+    shopName: 'QuickStop Grocery',
+    availableStock: 30,
+    price: 15.5,
+  ),
+  Item(
+    id: 'i3',
+    categoryType: 'Fruits & Vegetables',
+    shopName: 'Green Basket Veggies',
+    availableStock: 100,
+    price: 5.0,
+  ),
+  Item(
+    id: 'i4',
+    categoryType: 'Clothing',
+    shopName: 'Trendy Threads',
+    availableStock: 25,
+    price: 499.0,
+  ),
+  Item(
+    id: 'i5',
+    categoryType: 'Electronics',
+    shopName: 'TechWorld Electronics',
+    availableStock: 10,
+    price: 15000.0,
+  ),
+  Item(
+    id: 'i6',
+    categoryType: 'Books',
+    shopName: 'BookNest Store',
+    availableStock: 40,
+    price: 250.0,
+  ),
+  Item(
+    id: 'i7',
+    categoryType: 'Bakery',
+    shopName: 'SweetBite Bakery',
+    availableStock: 60,
+    price: 80.0,
+  ),
+  Item(
+    id: 'i8',
+    categoryType: 'Bakery',
+    shopName: 'BakeHouse Café',
+    availableStock: 45,
+    price: 120.0,
+  ),
+  Item(
+    id: 'i9',
+    categoryType: 'Pharmacy',
+    shopName: 'MediCare Pharmacy',
+    availableStock: 75,
+    price: 350.0,
+  ),
+  Item(
+    id: 'i10',
+    categoryType: 'Hardware',
+    shopName: 'Hardware Hub',
+    availableStock: 20,
+    price: 800.0,
+  ),
+];
