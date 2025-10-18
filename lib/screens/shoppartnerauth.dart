@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shopconnect/shoppartnerscreens/dashboardScreen.dart';
+// ✅ Import your dashboard screen
 
 class ShopPartnerAuthScreen extends StatefulWidget {
   const ShopPartnerAuthScreen({super.key});
@@ -38,6 +40,22 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
     shopNameController.dispose();
     pincodeController.dispose();
     super.dispose();
+  }
+
+  void _handleAuth() {
+    // Simple validation (optional)
+    if (phoneController.text.isEmpty || passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter all required fields')),
+      );
+      return;
+    }
+
+    // Simulate authentication success ✅
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const DashboardScreen()),
+    );
   }
 
   @override
@@ -219,9 +237,7 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
                           if (val == null) return;
                           setState(() {
                             selectedState = val;
-                            final districts =
-                                stateToDistricts[val] ?? ['Select'];
-                            selectedDistrict = districts.first;
+                            selectedDistrict = stateToDistricts[val]!.first;
                           });
                         },
                       ),
@@ -240,8 +256,7 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
                       const SizedBox(height: 6),
                       _dropdown(
                         value: selectedDistrict,
-                        items:
-                            stateToDistricts[selectedState] ?? const ['Select'],
+                        items: stateToDistricts[selectedState] ?? ['Select'],
                         onChanged: (val) {
                           if (val == null) return;
                           setState(() => selectedDistrict = val);
@@ -272,7 +287,7 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
           const SizedBox(height: 6),
           _textField(
             controller: passwordController,
-            hintText: '',
+            hintText: 'Enter your password',
             obscureText: true,
           ),
           const SizedBox(height: 16),
@@ -288,7 +303,7 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {},
+              onPressed: _handleAuth, // ✅ Login/Signup redirect function
               child: Text(isLogin ? 'Login' : 'Sign Up'),
             ),
           ),
