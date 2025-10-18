@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shopconnect/provider/cartProvider.dart';
+import 'package:shopconnect/screens/shoppingCartScreen.dart';
+import 'package:shopconnect/screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(create: (_) => CartProvider(), child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,6 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const HomeScreen(),
+      routes: {ShoppingCartScreen.routeName: (_) => const ShoppingCartScreen()},
     );
   }
 }

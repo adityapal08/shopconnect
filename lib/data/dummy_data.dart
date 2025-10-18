@@ -47,6 +47,7 @@ const availableCategories = [
     color: Colors.redAccent,
   ),
   Category(id: 'c8', title: 'Hardware', icon: Icons.build, color: Colors.teal),
+  Category(id: 'c9', title: 'Computer', icon: Icons.build, color: Colors.teal),
 ];
 
 final List<Shop> dummyShops = [

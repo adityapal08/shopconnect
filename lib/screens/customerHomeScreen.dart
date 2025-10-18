@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shopconnect/data/dummy_data.dart';
 import 'package:shopconnect/screens/categoryShopsScreen.dart';
+import 'package:shopconnect/screens/shoppingCartScreen.dart'; // <-- added
 import '../models/category.dart';
 import 'home_screen.dart';
-// import the new screen
 
 class CustomerHomeScreen extends StatefulWidget {
   const CustomerHomeScreen({super.key});
@@ -31,7 +31,15 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF0D5BFF),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  const ShoppingCartScreen(), // <-- redirect to cart
+            ),
+          );
+        },
         child: const Icon(Icons.shopping_cart, color: Colors.white),
       ),
       body: Container(

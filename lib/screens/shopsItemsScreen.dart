@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:shopconnect/provider/cartProvider.dart';
+import 'package:shopconnect/screens/shoppingCartScreen.dart';
 import '../data/dummy_data.dart';
 import '../models/item.dart';
 
@@ -20,12 +24,24 @@ class ShopItemsScreen extends StatefulWidget {
 
 class _ShopItemsScreenState extends State<ShopItemsScreen> {
   final Map<String, int> quantities = {};
+  final TextEditingController _searchController = TextEditingController();
+  String query = '';
 
   @override
   Widget build(BuildContext context) {
     final List<Item> shopItems = dummyItems
         .where((item) => item.shopName == widget.shopName)
         .toList();
+
+    final filteredItems = shopItems
+        .where(
+          (item) =>
+              item.id.toLowerCase().contains(query.toLowerCase()) ||
+              item.shopName.toLowerCase().contains(query.toLowerCase()),
+        )
+        .toList();
+
+    final cart = Provider.of<CartProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -46,21 +62,72 @@ class _ShopItemsScreenState extends State<ShopItemsScreen> {
           ],
         ),
         actions: [
-          IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () {}),
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart),
+                onPressed: () {
+                  Navigator.pushNamed(context, ShoppingCartScreen.routeName);
+                },
+              ),
+              if (cart.totalItems > 0)
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '${cart.totalItems}',
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: TextField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  hintText: 'Search items...',
+                  prefixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 12),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    query = value;
+                  });
+                },
+              ),
+            ),
+          ),
+        ),
       ),
-      body: shopItems.isEmpty
+      body: filteredItems.isEmpty
           ? const Center(
               child: Text(
-                'No items found in this shop!',
+                'No matching items found!',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
             )
           : ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: shopItems.length,
+              itemCount: filteredItems.length,
               itemBuilder: (context, index) {
-                final Item item = shopItems[index];
+                final Item item = filteredItems[index];
                 quantities[item.id] ??= 0;
 
                 return Card(
@@ -81,7 +148,7 @@ class _ShopItemsScreenState extends State<ShopItemsScreen> {
                               height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                color: Colors.grey[200], // placeholder color
+                                color: Colors.grey[200],
                               ),
                               child: const Icon(Icons.image, size: 36),
                             ),
@@ -164,6 +231,7 @@ class _ShopItemsScreenState extends State<ShopItemsScreen> {
                             const SizedBox(height: 8),
                             ElevatedButton(
                               onPressed: () {
+                                cart.addItem(item, quantities[item.id]!);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
@@ -171,6 +239,9 @@ class _ShopItemsScreenState extends State<ShopItemsScreen> {
                                     ),
                                   ),
                                 );
+                                setState(() {
+                                  quantities[item.id] = 0;
+                                });
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF0D5BFF),
