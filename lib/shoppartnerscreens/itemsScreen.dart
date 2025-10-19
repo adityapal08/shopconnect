@@ -82,176 +82,204 @@ class _ItemsScreenState extends State<ItemsScreen> {
       _imageFile = product.imageFile;
     }
 
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
+      barrierDismissible: true,
       builder: (ctx) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-            top: 20,
-            left: 20,
-            right: 20,
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Text(
-                    isEdit ? 'Edit Item' : 'Add New Item',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF7B2CFF),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Product Name',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  children: [
-                    _imageFile != null
-                        ? Image.file(
-                            _imageFile!,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          )
-                        : const Icon(
-                            Icons.image_outlined,
-                            size: 60,
-                            color: Colors.grey,
-                          ),
-                    const SizedBox(width: 10),
-                    ElevatedButton.icon(
-                      onPressed: _pickImage,
-                      icon: const Icon(Icons.upload),
-                      label: const Text('Choose Image'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF7B2CFF),
-                        foregroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Top row: title + close icon
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        isEdit ? 'Edit Item' : 'Add New Item',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF7B2CFF),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                TextField(
-                  controller: _quantityController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Quantity',
-                    border: OutlineInputBorder(),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.grey,
+                          size: 24,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 15),
-                TextField(
-                  controller: _priceController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Selling Price',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                TextField(
-                  controller: _purchasePriceController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Purchase Price',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                TextField(
-                  controller: _unitController,
-                  decoration: const InputDecoration(
-                    labelText: 'Unit (e.g. kg, pcs)',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 25),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_nameController.text.isEmpty ||
-                          _quantityController.text.isEmpty ||
-                          _priceController.text.isEmpty ||
-                          _unitController.text.isEmpty ||
-                          _purchasePriceController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please fill all fields!'),
-                          ),
-                        );
-                        return;
-                      }
+                  const SizedBox(height: 20),
 
-                      setState(() {
-                        if (isEdit) {
-                          product!.productName = _nameController.text;
-                          product.quantity = int.parse(
-                            _quantityController.text,
-                          );
-                          product.unit = _unitController.text;
-                          product.sellingPrice = double.parse(
-                            _priceController.text,
-                          );
-                          product.purchasePrice = double.parse(
-                            _purchasePriceController.text,
-                          );
-                          product.imageFile = _imageFile;
-                        } else {
-                          _products.add(
-                            Product(
-                              id: DateTime.now().toString(),
-                              productName: _nameController.text,
-                              quantity: int.parse(_quantityController.text),
-                              unit: _unitController.text,
-                              sellingPrice: double.parse(_priceController.text),
-                              purchasePrice: double.parse(
-                                _purchasePriceController.text,
-                              ),
-                              imageFile: _imageFile,
+                  // Product Name
+                  TextField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Product Name',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  // Image picker row
+                  Row(
+                    children: [
+                      _imageFile != null
+                          ? Image.file(
+                              _imageFile!,
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(
+                              Icons.image_outlined,
+                              size: 60,
+                              color: Colors.grey,
+                            ),
+                      const SizedBox(width: 10),
+                      ElevatedButton.icon(
+                        onPressed: _pickImage,
+                        icon: const Icon(Icons.upload),
+                        label: const Text('Choose Image'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF7B2CFF),
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+
+                  // Quantity
+                  TextField(
+                    controller: _quantityController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Quantity',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  // Selling Price
+                  TextField(
+                    controller: _priceController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Selling Price',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  // Purchase Price
+                  TextField(
+                    controller: _purchasePriceController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Purchase Price',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  // Unit
+                  TextField(
+                    controller: _unitController,
+                    decoration: const InputDecoration(
+                      labelText: 'Unit (e.g. kg, pcs)',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+
+                  // Save/Update button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_nameController.text.isEmpty ||
+                            _quantityController.text.isEmpty ||
+                            _priceController.text.isEmpty ||
+                            _unitController.text.isEmpty ||
+                            _purchasePriceController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please fill all fields!'),
                             ),
                           );
+                          return;
                         }
-                        _nameController.clear();
-                        _quantityController.clear();
-                        _priceController.clear();
-                        _unitController.clear();
-                        _purchasePriceController.clear();
-                        _imageFile = null;
-                      });
 
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF7B2CFF),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        setState(() {
+                          if (isEdit) {
+                            product!.productName = _nameController.text;
+                            product.quantity = int.parse(
+                              _quantityController.text,
+                            );
+                            product.unit = _unitController.text;
+                            product.sellingPrice = double.parse(
+                              _priceController.text,
+                            );
+                            product.purchasePrice = double.parse(
+                              _purchasePriceController.text,
+                            );
+                            product.imageFile = _imageFile;
+                          } else {
+                            _products.add(
+                              Product(
+                                id: DateTime.now().toString(),
+                                productName: _nameController.text,
+                                quantity: int.parse(_quantityController.text),
+                                unit: _unitController.text,
+                                sellingPrice: double.parse(
+                                  _priceController.text,
+                                ),
+                                purchasePrice: double.parse(
+                                  _purchasePriceController.text,
+                                ),
+                                imageFile: _imageFile,
+                              ),
+                            );
+                          }
+                          _nameController.clear();
+                          _quantityController.clear();
+                          _priceController.clear();
+                          _unitController.clear();
+                          _purchasePriceController.clear();
+                          _imageFile = null;
+                        });
+
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF7B2CFF),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        isEdit ? 'Update Item' : 'Save Item',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                    child: Text(
-                      isEdit ? 'Update Item' : 'Save Item',
-                      style: const TextStyle(fontSize: 16, color: Colors.white),
-                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -348,7 +376,6 @@ class _ItemsScreenState extends State<ItemsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Product Name
                               Text(
                                 product.productName,
                                 style: const TextStyle(
@@ -359,7 +386,6 @@ class _ItemsScreenState extends State<ItemsScreen> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 5),
-                              // Selling Price on the left
                               Text(
                                 'Selling Price: ₹${product.sellingPrice}',
                                 style: const TextStyle(
@@ -369,7 +395,6 @@ class _ItemsScreenState extends State<ItemsScreen> {
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              // Quantity & Unit
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 8,
@@ -388,13 +413,11 @@ class _ItemsScreenState extends State<ItemsScreen> {
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              // Purchase Price
                               Text(
                                 'Purchase: ₹${product.purchasePrice}',
                                 style: const TextStyle(fontSize: 14),
                               ),
                               const SizedBox(height: 5),
-                              // Profit
                               Text(
                                 'Profit Margin: ₹${product.profit.toStringAsFixed(0)} (${product.profitPercent.toStringAsFixed(0)}%)',
                                 style: const TextStyle(
@@ -403,7 +426,6 @@ class _ItemsScreenState extends State<ItemsScreen> {
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              // Edit/Delete Buttons
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

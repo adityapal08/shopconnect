@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopconnect/screens/shoppartnerauth.dart';
 
 import 'itemsScreen.dart';
-import 'ordersScreen.dart';
+import 'shoporders/ordersScreen.dart';
 import 'premiumScreen.dart';
 import 'analyticsScreen.dart';
 

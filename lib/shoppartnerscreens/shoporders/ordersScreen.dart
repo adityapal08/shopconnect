@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shopconnect/shoppartnerWidgets/orderNavBar.dart';
+import 'package:shopconnect/shoppartnerscreens/shoporders/activeorders.dart';
+import 'package:shopconnect/shoppartnerscreens/shoporders/donescreen.dart';
+import 'package:shopconnect/shoppartnerscreens/shoporders/pendingorders.dart';
+import 'package:shopconnect/shoppartnerscreens/shoporders/readyscreen.dart';
 
-import 'dashboardScreen.dart';
+import '../dashboardScreen.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -13,6 +17,14 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   int selectedIndex = 0;
   final List<String> tabs = ['Active', 'Pending', 'Ready', 'Done'];
+
+  // List of tab screens
+  final List<Widget> tabScreens = const [
+    ActiveOrders(),
+    PendingOrders(),
+    ReadyOrders(),
+    DoneOrders(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +87,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
       body: Column(
         children: [
-          // 🔹 Use the reusable OrdersNavBar widget
+          // 🔹 Reusable OrdersNavBar
           OrdersNavBar(
             tabs: tabs,
             selectedIndex: selectedIndex,
@@ -86,15 +98,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
             },
           ),
 
-          // Tab content
-          Expanded(
-            child: Center(
-              child: Text(
-                '${tabs[selectedIndex]} Orders',
-                style: const TextStyle(fontSize: 20),
-              ),
-            ),
-          ),
+          // 🔹 Tab content
+          Expanded(child: tabScreens[selectedIndex]),
         ],
       ),
     );
