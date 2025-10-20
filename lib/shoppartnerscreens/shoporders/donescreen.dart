@@ -80,12 +80,12 @@ class DoneOrders extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple,
+                          backgroundColor: Colors.green, // Green background
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text('View Details'),
+                        child: const Text('Completed'), // Changed text
                       ),
                     ),
                   ],
