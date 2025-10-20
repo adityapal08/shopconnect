@@ -43,7 +43,6 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
   }
 
   void _handleAuth() {
-    // Simple validation (optional)
     if (phoneController.text.isEmpty || passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter all required fields')),
@@ -51,7 +50,6 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
       return;
     }
 
-    // Simulate authentication success ✅
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const DashboardScreen()),
@@ -60,8 +58,12 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
+        height: screenHeight, // ✅ Full screen height
+        width: double.infinity, // ✅ Full screen width
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -303,7 +305,7 @@ class _ShopPartnerAuthScreenState extends State<ShopPartnerAuthScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: _handleAuth, // ✅ Login/Signup redirect function
+              onPressed: _handleAuth,
               child: Text(isLogin ? 'Login' : 'Sign Up'),
             ),
           ),
