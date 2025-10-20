@@ -52,43 +52,80 @@ class _CustomerAuthScreenState extends State<CustomerAuthScreen>
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                const SizedBox(height: 24),
-                Center(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Column(
-                    children: const [
-                      Text(
-                        'Welcome Back!',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      const SizedBox(height: 24),
+                      Center(
+                        child: Column(
+                          children: const [
+                            Text(
+                              'Welcome Back!',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              'Sign in to start shopping',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 6),
-                      Text(
-                        'Sign in to start shopping',
-                        style: TextStyle(color: Colors.white70, fontSize: 14),
-                      ),
+                      const SizedBox(height: 20),
+                      _buildTabSwitcher(),
+                      const SizedBox(height: 16),
+                      _buildAuthCard(context),
+                      const SizedBox(height: 60), // space for skip button
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                _buildTabSwitcher(),
-                const SizedBox(height: 16),
-                _buildAuthCard(context),
-              ],
-            ),
+              ),
+              // Skip Button at bottom-right
+              Padding(
+                padding: const EdgeInsets.only(right: 16, bottom: 12),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (_) => const CustomerHomeScreen(),
+                        ),
+                        (route) => false,
+                      );
+                    },
+                    child: const Text(
+                      'Skip',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
